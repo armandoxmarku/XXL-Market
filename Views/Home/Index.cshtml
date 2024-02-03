@@ -1,0 +1,48 @@
+﻿@model List<XXL_Market.Models.Product>
+
+
+@{
+    ViewBag.Title = "All Products";
+}
+
+
+@{
+    ViewBag.Title = "All Products";
+}
+
+<h2 class="text-center mt-3 mb-4">All Products</h2>
+
+<!-- Category Filter -->
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card border-light shadow-sm bg-lightblue">
+                <img src="~/@product.PictureUrl" class="card-img-top" alt="Product Image" style="max-height: 100px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
+                <div class="card-body">
+                    <!-- Link to view single product details -->
+                    <h5 class="card-title text-truncate" style="color: #3e517a;">
+                        <a href="@Url.Action("Product", "Home", new { id = product.ProductId })" class="text-decoration-none">
+                            @product.Name
+                        </a>
+                    </h5>
+
+                    <p class="card-text text-muted">@product.Description</p>
+                    <p class="card-text" style="color: #3e517a;">Price: $@product.FormattedPrice</p>
+
+                    <!-- Buttons -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <form asp-action="AddToCart" asp-route-id="@product.ProductId" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <input type="hidden" name="quantity" id="hiddenQuantity_@product.ProductId" value="1" />
+                                <button type="submit" class="btn btn-success btn-block rounded-pill">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

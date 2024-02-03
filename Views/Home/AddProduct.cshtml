@@ -1,0 +1,47 @@
+@model Product
+@{
+    ViewBag.Title = "Add Product";
+}
+
+
+<form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+    <div>
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+    <label asp-for="CategoryId">Category</label>
+    <select asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "Name"))">
+        <option value="">Select Category</option>
+    </select>
+    <span asp-validation-for="CategoryId"></span>
+</div>
+
+
+    <div>
+        <label asp-for="Price">Price</label>
+        <input asp-for="Price" />
+        <span asp-validation-for="Price"></span>
+    </div>
+
+    <div>
+        <label asp-for="Quantity">Quantity</label>
+        <input asp-for="Quantity" />
+        <span asp-validation-for="Quantity"></span>
+    </div>
+
+    <div>
+        <label for="ImageFile">Image</label>
+        <input type="file" name="imageFile" />
+    </div>
+
+    <div>
+        <input type="submit" value="Add Product" />
+    </div>
+</form>
