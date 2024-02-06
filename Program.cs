@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using PayPalCheckoutSdk.Core;
+
 // You will need access to your models for your context file
 using XXL_Market.Models;
 
@@ -16,6 +18,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+
 builder.Services.AddDbContext<MyContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -33,6 +37,7 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

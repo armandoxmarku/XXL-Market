@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using XXL_Market.Models;
 
+
 namespace XXL_Market.Controllers;
 public class SessionCheckAttribute : ActionFilterAttribute
 {
@@ -25,6 +26,7 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private MyContext _context;
+    
 
     public HomeController(ILogger<HomeController> logger , MyContext context)
     {
@@ -90,14 +92,25 @@ public class HomeController : Controller
     
   
     [SessionCheck]
-    public IActionResult Index()
-    {
-        List<Product> products = _context.Products
+public IActionResult Index(int? categoryId)
+{
+    IQueryable<Product> productsQuery = _context.Products
         .Include(p => p.User)
-        .Include(p => p.Category)
-        .ToList();
-        return View("Index",products);
+        .Include(p => p.Category);
+
+    if (categoryId.HasValue)
+    {
+        // Filter products by the selected category
+        productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
     }
+
+    List<Product> products = productsQuery.ToList();
+    ViewBag.Categories = _context.Categories.ToList(); // Populate categories for the select dropdown
+    ViewBag.SelectedCategory = categoryId; // Pass the selected category ID to the view
+
+    return View("Index", products);
+}
+
     [SessionCheck]
     [HttpGet("AddProduct")]
     public IActionResult AddProduct()
@@ -375,6 +388,7 @@ public IActionResult DecreaseQuantity(int id)
         }
         return View("Category");
     }
+    
    
     public IActionResult Privacy()
     {

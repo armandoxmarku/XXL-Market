@@ -33,3 +33,5 @@ C:\Users\USER\Desktop\XXL-Market\obj\Debug\net6.0\refint\XXL-Market.dll
 C:\Users\USER\Desktop\XXL-Market\obj\Debug\net6.0\XXL-Market.pdb
 C:\Users\USER\Desktop\XXL-Market\obj\Debug\net6.0\XXL-Market.genruntimeconfig.cache
 C:\Users\USER\Desktop\XXL-Market\obj\Debug\net6.0\ref\XXL-Market.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\PayPalCheckoutSdk.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\PayPalHttp-Dotnet.dll

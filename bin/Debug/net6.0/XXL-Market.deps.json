@@ -9,6 +9,7 @@
       "XXL-Market/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Design": "6.0.3",
+          "PayPalCheckoutSdk": "1.0.4",
           "Pomelo.EntityFrameworkCore.MySql": "6.0.1"
         },
         "runtime": {
@@ -131,6 +132,25 @@
           "lib/net6.0/MySqlConnector.dll": {
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.1.2.0"
+          }
+        }
+      },
+      "PayPalCheckoutSdk/1.0.4": {
+        "dependencies": {
+          "PayPalHttp": "1.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/PayPalCheckoutSdk.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PayPalHttp/1.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/PayPalHttp-Dotnet.dll": {
+            "assemblyVersion": "1.0.1.0",
+            "fileVersion": "1.0.1.0"
           }
         }
       },
@@ -277,6 +297,20 @@
       "sha512": "sha512-JVokQTUNN3WHAu9Vw8ieeq1dXTFokJiig5P0VJ4f439UxRrsPo6SaVWC8Zdm6mkPeQFhZ0/9afdWa02EY/1j/w==",
       "path": "mysqlconnector/2.1.2",
       "hashPath": "mysqlconnector.2.1.2.nupkg.sha512"
+    },
+    "PayPalCheckoutSdk/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4fsOPj6SOJurbVf5ANg7NQ5TNvSYmtngf3dpJN11xEk6BP+5Rn6OcaaTbUx+bVnnYmgaoe5LbRZe52QpAjuwqg==",
+      "path": "paypalcheckoutsdk/1.0.4",
+      "hashPath": "paypalcheckoutsdk.1.0.4.nupkg.sha512"
+    },
+    "PayPalHttp/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Jlg8e9Egwxk+sfkIoGIkjQS+uxGNIOnY6NbUkWXKJiEGGqryeV9bIRNtSfjSgs/g02JcIQbKRFQW+8amtSo3ig==",
+      "path": "paypalhttp/1.0.1",
+      "hashPath": "paypalhttp.1.0.1.nupkg.sha512"
     },
     "Pomelo.EntityFrameworkCore.MySql/6.0.1": {
       "type": "package",

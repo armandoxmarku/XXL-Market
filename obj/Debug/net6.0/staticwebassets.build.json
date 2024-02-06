@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HXRJ/chr/jd82rALx3Klrij7dndDXKPGvUh7yz/Sxso=",
+  "Hash": "Ab3KbEHR+GDEQ4aOACYM0KCVvbtFRVYL61v+WfB6Q4A=",
   "Source": "XXL-Market",
   "BasePath": "_content/XXL-Market",
   "Mode": "Default",
@@ -253,6 +253,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Screenshot 2023-11-06 200839.png"
+    },
+    {
+      "Identity": "C:\\Users\\USER\\Desktop\\XXL-Market\\wwwroot\\images\\Screenshot 2023-11-06 225706.png",
+      "SourceId": "XXL-Market",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\USER\\Desktop\\XXL-Market\\wwwroot\\",
+      "BasePath": "_content/XXL-Market",
+      "RelativePath": "images/Screenshot 2023-11-06 225706.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Screenshot 2023-11-06 225706.png"
     },
     {
       "Identity": "C:\\Users\\USER\\Desktop\\XXL-Market\\wwwroot\\images\\Screenshot 2023-11-06 230001.png",

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "S9kOY3i1Uz9kqkUMhhSwoRnQGoWtD+waTz3pYiV4Acj+WUgoe2sDLe+rGmsxlBSu4H2ks6fWKfy3g8Wo3GKuqw==",
+  "dgSpecHash": "W3vW3EilXeQJJiV1cRWfqiVHNtxL/97i8PJXkw1rly8yR9OxGGws6l8ksLaRo/t0w+hfUyJnw4JK3rqRFrWcQA==",
   "success": true,
   "projectFilePath": "C:\\Users\\USER\\Desktop\\XXL-Market\\XXL-Market.csproj",
   "expectedPackageFiles": [
@@ -20,6 +20,8 @@
     "C:\\Users\\USER\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\mysqlconnector\\2.1.2\\mysqlconnector.2.1.2.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\paypalcheckoutsdk\\1.0.4\\paypalcheckoutsdk.1.0.4.nupkg.sha512",
+    "C:\\Users\\USER\\.nuget\\packages\\paypalhttp\\1.0.1\\paypalhttp.1.0.1.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\6.0.1\\pomelo.entityframeworkcore.mysql.6.0.1.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\USER\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
