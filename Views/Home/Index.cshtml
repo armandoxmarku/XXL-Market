@@ -1,56 +1,73 @@
 ﻿@model List<XXL_Market.Models.Product>
 
-
 @{
     ViewBag.Title = "All Products";
 }
 
-
 <!-- Category Filter -->
+<link rel="stylesheet" href="~/css/index.css">
+
+
+
 <div>@await Html.PartialAsync("_nav")</div>
 
-<h2 class="text-center mt-3 mb-4">All Products</h2>
+<h1 class="text-center mt-3 mb-4">Make Your Choice </h1>
 
-<div class="form-group">
-    <label>Filter by Category:</label>
-    <div class="btn-group">
-        <a class="btn btn-primary @((ViewBag.SelectedCategory == null) ? "active" : "")" href="/Home/Index">All Categories</a>
+<div class="category-filter">
+
+    <div class="category-buttons">
+        <a class="category-button @(ViewBag.SelectedCategory == null ? "active" : "")" href="/Home/Index">All
+            Categories</a>
         @foreach (var category in ViewBag.Categories)
         {
-            <a class="btn btn-primary @(ViewBag.SelectedCategory == category.CategoryId ? "active" : "")" href="/Home/Index?categoryId=@category.CategoryId">@category.Name</a>
+            <a class="category-button @(ViewBag.SelectedCategory == category.CategoryId ? "active" : "")"
+                href="/Home/Index?categoryId=@category.CategoryId">@category.Name</a>
         }
     </div>
 </div>
 
-<div class="row">
+<div class="product-grid">
     @foreach (var product in Model)
     {
-        <div class="col-md-4 mb-4">
-            <div class="card border-light shadow-sm bg-lightblue">
-                <img src="~/@product.PictureUrl" class="card-img-top" alt="Product Image" style="max-height: 100px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
-                <div class="card-body">
-                    <!-- Link to view single product details -->
-                    <h5 class="card-title text-truncate" style="color: #3e517a;">
-                        <a href="@Url.Action("Product", "Home", new { id = product.ProductId })" class="text-decoration-none">
-                            @product.Name
-                        </a>
-                    </h5>
+        <div class="product-card">
+            <img src="~/@product.PictureUrl" alt="Product Image" class="product-image">
+            <div class="product-details">
+                <h3 class="product-title">
+                    <a href="@Url.Action("Product", "Home", new { id = product.ProductId })" class="product-link">@product.Name</a>
+                </h3>
+                <p class="product-description">@product.Description</p>
+                <p class="product-price">$@product.FormattedPrice</p>
+                <div class="product-actions">
+                    @if (Context.Session.GetInt32("UserId") != product.User.UserId)
+                    {
+                        <form asp-action="AddToCart" asp-route-id="@product.ProductId" method="post">
+                            <input type="hidden" name="productId" value="@product.ProductId" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="add-to-cart-button">Add to Cart</button>
+                        </form>
+                        <form asp-action="CheckoutWithPayPal" method="post">
+                            <input type="hidden" name="productId" value="@product.ProductId" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <input type="hidden" name="price" value="@product.Price" />
+                            <button type="submit" class="checkout-button">Checkout with PayPal</button>
+                        </form>
+                    }
+                   @if (Context.Session.GetInt32("UserId") == product.User.UserId)
+{
+    <div class="product-actions">
+        <form asp-action="DeleteProduct" asp-route-id="@product.ProductId" method="post">
+            <button type="submit" class="delete-button">X</button>
+        </form>
+        <form asp-action="EditProduct" asp-route-id="@product.ProductId" method="get">
+            <button type="submit" class="edit-button">Edit</button>
+        </form>
+    </div>
+}
 
-                    <p class="card-text text-muted">@product.Description</p>
-                    <p class="card-text" style="color: #3e517a;">Price: $@product.FormattedPrice</p>
-
-                    <!-- Buttons -->
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <form asp-action="AddToCart" asp-route-id="@product.ProductId" method="post">
-                                <input type="hidden" name="productId" value="@product.ProductId" />
-                                <input type="hidden" name="quantity" id="hiddenQuantity_@product.ProductId" value="1" />
-                                <button type="submit" class="btn btn-success btn-block rounded-pill">Add to cart</button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     }
+</div>
+
 </div>

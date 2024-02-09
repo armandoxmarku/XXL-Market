@@ -16,10 +16,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // And we will add one more service
 // Make sure this is BEFORE var app = builder.Build()!!
 
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
-
-
 builder.Services.AddDbContext<MyContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));

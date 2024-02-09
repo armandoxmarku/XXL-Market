@@ -35,3 +35,10 @@ C:\Users\USER\Desktop\XXL-Market\obj\Debug\net6.0\XXL-Market.genruntimeconfig.ca
 C:\Users\USER\Desktop\XXL-Market\obj\Debug\net6.0\ref\XXL-Market.dll
 C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\PayPalCheckoutSdk.dll
 C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\PayPalHttp-Dotnet.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\APIMatic.Core.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\Microsoft.Bcl.HashCode.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\Microsoft.Json.Pointer.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\Polly.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\Square.dll
+C:\Users\USER\Desktop\XXL-Market\bin\Debug\net6.0\System.Collections.Immutable.dll

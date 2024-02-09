@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Product Details";
 }
+@await Html.PartialAsync("_nav")
 
 <h2 class="mb-4">Product Details</h2>
 
@@ -11,7 +12,8 @@
         <div class="col-md-4">
             @if (!string.IsNullOrEmpty(Model.PictureUrl))
             {
-                <img src="~/@Model.PictureUrl" class="card-img-top" alt="Product Image" style="max-height: 220px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
+                <img src="~/@Model.PictureUrl" class="card-img-top" alt="Product Image"
+                    style="max-height: 220px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
             }
         </div>
         <div class="col-md-8">
@@ -22,17 +24,18 @@
                     <li><strong>Price:</strong> @Model.FormattedPrice</li>
                     <li><strong>Quantity:</strong> @Model.Quantity</li>
                     <li><strong>Category:</strong> @Model.Category?.Name</li>
-                    <li><strong>Created At:</strong> @Model.CreatedAt</li>
-                    <li><strong>Updated At:</strong> @Model.UpdatedAt</li>
+                    <li><strong>Listed:</strong> @Model.CreatedAt</li>
+
                 </ul>
-                <div class="col-md-6">
-                            <form asp-action="AddToCart" asp-route-id="@Model.ProductId" method="post">
-                                <input type="hidden" name="productId" value="@Model.ProductId" />
-                                <input type="hidden" name="quantity" id="hiddenQuantity_@Model.ProductId" value="1" />
-                                <button type="submit" class="btn btn-success btn-block rounded-pill">Add to Cart</button>
-                            </form>
-                        </div>
-            </div>
-        </div>
+                    @* <div class="col-md-6">
+        <form asp-action="AddToCart" asp-route-id="@Model.ProductId" method="post">
+            <input type="hidden" name="productId" value="@Model.ProductId" />
+            <input type="hidden" name="quantity" id="hiddenQuantity_@Model.ProductId" value="1" />
+            <button type="submit" class="btn btn-success btn-block rounded-pill">Add to Cart</button>
+        </form> *@
+    </div>
+
+
+
     </div>
 </div>

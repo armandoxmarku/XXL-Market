@@ -32,7 +32,7 @@ public class User
     public string Password { get; set; }    
 
     public List<Product>? UserProducts {get;set;}= new List<Product>();
-    public List<Order>? UserOrders { get; set; } = new List<Order>();
+    public List<Orderi>? UserOrders { get; set; } = new List<Orderi>();
 
     [NotMapped]
     [Compare("Password")]

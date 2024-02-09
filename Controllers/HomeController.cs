@@ -1,9 +1,14 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+
 using XXL_Market.Models;
+using PayPalCheckoutSdk.Orders;
+using PayPalHttp;
+using PayPalCheckoutSdk.Core;
 
 
 namespace XXL_Market.Controllers;
@@ -26,19 +31,20 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private MyContext _context;
+
+     private readonly IConfiguration _configuration;
     
 
-    public HomeController(ILogger<HomeController> logger , MyContext context)
+    public HomeController(ILogger<HomeController> logger , MyContext context, IConfiguration configuration)
     {
         _logger = logger;
         _context = context;
+        _configuration = configuration;
     }
+   
      [HttpGet("Auth")]
     public IActionResult Auth(){
         return View("Auth");
-
-    
-
     } 
     public IActionResult Register(User useriNgaForma)
     {
@@ -91,7 +97,7 @@ public class HomeController : Controller
    
     
   
-    [SessionCheck]
+    
 public IActionResult Index(int? categoryId)
 {
     IQueryable<Product> productsQuery = _context.Products
@@ -104,12 +110,16 @@ public IActionResult Index(int? categoryId)
         productsQuery = productsQuery.Where(p => p.CategoryId == categoryId);
     }
 
+    // Order products by date created in descending order (latest first)
+    productsQuery = productsQuery.OrderByDescending(p => p.CreatedAt);
+
     List<Product> products = productsQuery.ToList();
     ViewBag.Categories = _context.Categories.ToList(); // Populate categories for the select dropdown
     ViewBag.SelectedCategory = categoryId; // Pass the selected category ID to the view
 
     return View("Index", products);
 }
+
 
     [SessionCheck]
     [HttpGet("AddProduct")]
@@ -191,12 +201,12 @@ public IActionResult AddToCart(int id)
         return RedirectToAction("Index");
     }
 
-    Order order = _context.Orders.FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
+    Orderi order = _context.Orders.FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
 
     if (order == null)
     {
         // If the order doesn't exist, create a new order
-        order = new Order
+        order = new Orderi
         {
             UserId = (int)HttpContext.Session.GetInt32("UserId"),
             Status = "Pending"
@@ -207,14 +217,14 @@ public IActionResult AddToCart(int id)
 
     // Check if the product is already in the cart
     OrderDetail orderDetail = _context.OrderDetails
-        .FirstOrDefault(od => od.OrderId == order.OrderId && od.ProductId == product.ProductId);
+        .FirstOrDefault(od => od.OrderiId == order.OrderiId && od.ProductId == product.ProductId);
 
     if (orderDetail == null)
     {
         // If the product is not in the cart, create a new order detail
         orderDetail = new OrderDetail
         {
-            OrderId = order.OrderId,
+            OrderiId = order.OrderiId,
             ProductId = product.ProductId,
             Quantity = requestedQuantity
         };
@@ -242,38 +252,38 @@ public IActionResult AddToCart(int id)
     [HttpGet("Cart")]
     public IActionResult Cart()
     {
-        Order order = _context.Orders
+        Orderi order = _context.Orders
         .Include(o => o.OrderDetails)
         .ThenInclude(od => od.Product)
         .FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
         return View("Cart",order);
     }
-    [HttpGet("Checkout")]
-    public IActionResult Checkout()
-    {
-        Order order = _context.Orders
-        .Include(o => o.OrderDetails)
-        .ThenInclude(od => od.Product)
-        .FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
-        return View("Checkout",order);
-    }
-    [HttpPost("ProcessCheckout")]
-    public IActionResult ProcessCheckout(Order order)
-    {
-        Order orderInDb = _context.Orders
-        .Include(o => o.OrderDetails)
-        .ThenInclude(od => od.Product)
-        .FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
-        orderInDb.OrderDate = DateTime.Now;
-        orderInDb.Status = "Completed";
-        orderInDb.TotalAmount = order.TotalAmount;
-        _context.SaveChanges();
-        return RedirectToAction("Index");
-    }
+    // [HttpGet("Checkout")]
+    // public IActionResult Checkout()
+    // {
+    //     Orderi order = _context.Orders
+    //     .Include(o => o.OrderDetails)
+    //     .ThenInclude(od => od.Product)
+    //     .FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
+    //     return View("Checkout",order);
+    // }
+    // [HttpPost("ProcessCheckout")]
+    // public IActionResult ProcessCheckout(Orderi order)
+    // {
+    //     Orderi orderInDb = _context.Orders
+    //     .Include(o => o.OrderDetails)
+    //     .ThenInclude(od => od.Product)
+    //     .FirstOrDefault(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Pending");
+    //     orderInDb.OrderDate = DateTime.Now;
+    //     orderInDb.Status = "Completed";
+    //     orderInDb.TotalAmount = order.TotalAmount;
+    //     _context.SaveChanges();
+    //     return RedirectToAction("Index");
+    // }
     [HttpGet("Orders")]
     public IActionResult Orders()
     {
-        List<Order> orders = _context.Orders
+        List<Orderi> orders = _context.Orders
         .Include(o => o.OrderDetails)
         .ThenInclude(od => od.Product)
         .Where(o => o.UserId == HttpContext.Session.GetInt32("UserId") && o.Status == "Completed")
@@ -335,6 +345,7 @@ public IActionResult DecreaseQuantity(int id)
     return RedirectToAction("Cart");
 }
 
+    [SessionCheck]
     [HttpGet("Product/{id}")]
     public IActionResult Product(int id)
     {
@@ -353,25 +364,77 @@ public IActionResult DecreaseQuantity(int id)
         return RedirectToAction("Index");
 
     }
+    [SessionCheck]
     [HttpGet("EditProduct/{id}")]
     public IActionResult EditProduct(int id)
     {
         Product product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+         ViewBag.Categories = _context.Categories.ToList();
         return View("EditProduct",product);
     }
+
     [HttpPost("UpdateProduct/{id}")]
-    public IActionResult UpdateProduct(int id, Product product)
+public async Task<IActionResult> UpdateProduct(int id, IFormFile imageFile, Product updatedProduct)
+{
+    try
     {
-        Product productInDb = _context.Products.FirstOrDefault(p => p.ProductId == id);
-        productInDb.Name = product.Name;
-        productInDb.Description = product.Description;
-        productInDb.Price = product.Price;
-        productInDb.Quantity = product.Quantity;
-        productInDb.CategoryId = product.CategoryId;
-        productInDb.UpdatedAt = DateTime.Now;
-        _context.SaveChanges();
-        return RedirectToAction("Index");
+        if (ModelState.IsValid)
+        {
+            var productInDb = _context.Products.FirstOrDefault(p => p.ProductId == id);
+
+            if (productInDb == null)
+            {
+                return NotFound(); // Or handle the case where the product doesn't exist
+            }
+
+            // Update other properties of the product
+            productInDb.Name = updatedProduct.Name;
+            productInDb.Description = updatedProduct.Description;
+            productInDb.Price = updatedProduct.Price;
+            productInDb.Quantity = updatedProduct.Quantity;
+            productInDb.CategoryId = updatedProduct.CategoryId;
+
+            // Update the image if a new one is provided
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var fileName = Path.GetFileName(imageFile.FileName);
+                var relativePath = Path.Combine("images", fileName);
+                var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath);
+
+                using (var fileStream = new FileStream(absolutePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+
+                productInDb.PictureUrl = relativePath;
+            }
+
+            // Update and save changes to the database
+            _context.Products.Update(productInDb);
+            await _context.SaveChangesAsync();
+
+            // Log success
+            _logger.LogInformation("Product updated successfully.");
+
+            return RedirectToAction("Index");
+        }
     }
+    catch (Exception ex)
+    {
+        // Log the exception
+        _logger.LogError(ex, "Error updating product.");
+
+        // Optionally, you can redirect to an error page or return a specific error view
+        return View("Error");
+    }
+
+    // Log if ModelState is invalid
+    _logger.LogWarning("ModelState is invalid.");
+
+    // If ModelState is invalid, return the edit view with the updated product model
+    return View("EditProduct", updatedProduct);
+}
+
     [HttpGet("Category")]
     public IActionResult Category()
     {
@@ -388,16 +451,76 @@ public IActionResult DecreaseQuantity(int id)
         }
         return View("Category");
     }
-    
-   
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    //  [HttpPost("CheckoutWithPayPal")]
+    // public async Task<IActionResult> CheckoutWithPayPal(int productId, int quantity, decimal price)
+    // {
+    //     // Set up PayPal environment with client ID and secret
+    //     var environment = new SandboxEnvironment(_configuration["AVkUnSz5VT_s03PHP8QRBKDOZarTkI83BRxD5uVM3Zcb0A0E32Z1ohumrMiE8cUMUAfhM_0xQKMgMSlM"], _configuration["EOjd-m4ObjurOFnFJdGPj6FoJyR1S2oj9HUKC-ONOeEBIUIsFYkn6j_FevSwHtp4rImmuTCGdaxaldfL"]);
+    //     var client = new PayPalHttpClient(environment);
 
+    //     // Create an order request
+    //     var orderRequest = new OrderRequest()
+    //     {
+    //         CheckoutPaymentIntent = "CAPTURE",
+    //         PurchaseUnits = new List<PurchaseUnitRequest>()
+    //         {
+    //             new PurchaseUnitRequest()
+    //             {
+    //                 AmountWithBreakdown = new AmountWithBreakdown()
+    //                 {
+    //                     CurrencyCode = "USD",
+    //                     Value = price.ToString() // Assuming the price is in USD
+    //                 }
+    //             }
+    //         },
+    //         ApplicationContext = new ApplicationContext()
+    //         { 
+    //             ReturnUrl = RedirectToAction("PayPalSuccess").ToString(),
+    //             CancelUrl = "https://yourwebsite.com/paypal/cancel"
+    //         }
+    //     };
+
+    //     // Create the order
+    //     var request = new OrdersCreateRequest();
+    //     request.Prefer("return=representation");
+    //     request.RequestBody(orderRequest);
+
+    //     try
+    //     {
+    //         var response = await client.Execute(request);
+    //         var result = response.Result<Order>();
+
+    //         // Redirect the user to PayPal for payment completion
+    //         return Redirect(result.Links.Find(link => link.Rel == "approve").Href);
+    //     }
+    //     catch (HttpException ex)
+    //     {
+    //         // Handle PayPal API errors
+    //         _logger.LogError(ex, "Error occurred during PayPal checkout.");
+    //         return RedirectToAction("Error");
+    //     }
+    // }
+
+    // // Add action methods for success and cancel URLs
+    // public IActionResult PayPalSuccess()
+    // {
+    //     // Handle successful PayPal payment
+    //     return View("PayPalSuccess");
+    // }
+
+    // public IActionResult PayPalCancel()
+    // {
+    //     // Handle canceled PayPal payment
+    //     return View("PayPalCancel");
+    // }
+
+    
+    
+ 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
 }

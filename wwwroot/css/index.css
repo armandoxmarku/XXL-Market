@@ -1,0 +1,172 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Define color variables */
+:root {
+    --first-color: #dbd8e3;
+    --second-color: #5c5470;
+    --third-color: #352f44;
+    --fourth-color: #2a2438;
+}
+
+.category-filter {
+    margin-bottom: 20px;
+}
+
+.category-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.category-button {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    background-color: var(--first-color); /* Use the first color variable */
+    color: #333;
+    text-decoration: none;
+    border-radius: 20px; /* Rounded corners */
+}
+
+.category-button.active {
+    background-color: #333;
+    color: #fff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+.product-card {
+    position: relative; /* Establish positioning context */
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Move up on hover */
+}
+.edit-button {
+    padding: 6px 10px; /* Same padding as other buttons */
+    border: none;
+    background-color: #007bff; /* Same background color as other buttons */
+    color: #fff; /* Text color */
+    cursor: pointer;
+    border-radius: 20px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    font-size: 12px; /* Font size */
+}
+
+.edit-button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px; /* Rounded corners for top left and top right */
+    border-top-right-radius: 10px;
+}
+
+.product-details {
+    padding: 15px; /* Increased padding */
+}
+.product-link {
+    color: var(--second-color); /* Purple color from the palette */
+    font-weight: bold; /* Bolder font */
+    font-size: 18px; /* Bigger font size */
+}
+/* Adjust the position of the delete button */
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+/* Style the delete button */
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1;
+}
+
+
+
+
+.product-link:hover {
+    color: #f0f0f0; /* Lighter color on hover */
+}
+
+
+.product-title {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    text-decoration: none;
+}
+
+.product-title:hover {
+    color: #007bff;
+}
+
+.product-description {
+    color: #666;
+    margin-bottom: 10px; /* Increased margin */
+}
+
+.product-price {
+    margin: 5px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.add-to-cart-button,
+.checkout-button {
+    padding: 6px 10px; /* Smaller padding */
+    border: none;
+    background-color: var(--second-color); /* Use the second color variable */
+    color: #fff;
+    cursor: pointer;
+    border-radius: 20px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    font-size: 12px; /* Smaller font size */
+}
+
+.add-to-cart-button:hover,
+.checkout-button:hover {
+    background-color: var(--third-color); /* Use the third color variable */
+}
+   
+h1{
+    color: #4141b4;
+    font-family: 'Brush Script MT', cursive;
+}
+
+
